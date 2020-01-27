@@ -10,11 +10,18 @@ public class NBioBSPJNI {
 	
 	private int codigoErro;
 	
+	static boolean s_useNative;
 	
-	static {
-		System.loadLibrary("NBioBSPJNI");
-	}
-	
+	  static {
+		    try {
+		      System.loadLibrary("NBioBSPJNI");
+		      s_useNative = true;
+		      System.out.println("loadLibrary success");
+		    } catch (Exception exception) {
+		      s_useNative = false;
+		      System.out.println(exception.getMessage());
+		    } 
+		  }
 	
 	public static class FIR_PURPOSE {
 	    public static final int VERIFY = 1;
@@ -33,12 +40,12 @@ public class NBioBSPJNI {
 	  }
 	  
 	
-	
 	private native int NativeCapture(int purpose, FIR_HANDLE parametro2, int TIMEOUT_MILI, FIR_HANDLE para4, WINDOW_OPTION window_option);
 	private native int NativeOpenDevice();
-	private native int NativeVerify(INPUT_FIR paramINPUT_FIR, Boolean paramBoolean, FIR_PAYLOAD paramFIR_PAYLOAD);	
-	private native int TesteObject(Items items);	
+	public static native void NativeVerify(INPUT_FIR paramINPUT_FIR, Boolean paramBoolean, FIR_PAYLOAD paramFIR_PAYLOAD);	
+	public static native int TesteObject(Boolean b);	
 	
+
 	public  class Items {
 		
 		public String nome;	
@@ -51,9 +58,14 @@ public class NBioBSPJNI {
 	}
 	
 	
-	public void TestObject (Items items) {
+	public int testeObjeto (Boolean b) {
 		
-		new NBioBSPJNI().TesteObject(items);
+		int a = 0;
+		if(s_useNative)
+		 a = NBioBSPJNI.TesteObject(b);
+		
+		return a;
+		
 		
 	}
 	
@@ -90,14 +102,15 @@ public class NBioBSPJNI {
 	// fim capture
 	
 	
-	public int Verify(INPUT_FIR paramINPUT_FIR, Boolean paramBoolean, FIR_PAYLOAD paramFIR_PAYLOAD) {
+	public void Verify(INPUT_FIR paramINPUT_FIR, Boolean paramBoolean, FIR_PAYLOAD paramFIR_PAYLOAD) {
 		this.codigoErro  = 1;
 		
 		FIR_PAYLOAD fp = new FIR_PAYLOAD();
 		FIR_HANDLE fh = new FIR_HANDLE();
 		WINDOW_OPTION wp = new WINDOW_OPTION();
 		
-		return this.codigoErro = this.NativeVerify(paramINPUT_FIR, paramBoolean, fp);
+		//return this.codigoErro = 
+		this.NativeVerify(paramINPUT_FIR, paramBoolean, fp);
 		
 	}
 	
