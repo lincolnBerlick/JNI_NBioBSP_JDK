@@ -40,10 +40,11 @@ public class NBioBSPJNI {
 	  }
 	  
 	
-	private native int NativeCapture(int purpose, FIR_HANDLE parametro2, int TIMEOUT_MILI, FIR_HANDLE para4, WINDOW_OPTION window_option);
-	private native int NativeOpenDevice();
-	public static native void NativeVerify(INPUT_FIR paramINPUT_FIR, Boolean paramBoolean, FIR_PAYLOAD paramFIR_PAYLOAD);	
-	public static native int TesteObject(Boolean b);	
+	private static native int NativeCapture(int purpose, FIR_HANDLE parametro2, int TIMEOUT_MILI, FIR_HANDLE para4, WINDOW_OPTION window_option);
+	private static native int NativeOpenDevice();
+	private static native int NativeCloseDevice(short paramShort);
+	private static native void NativeVerify(INPUT_FIR paramINPUT_FIR, Boolean paramBoolean, FIR_PAYLOAD paramFIR_PAYLOAD);	
+	private static native int TesteObject(Boolean b);	
 	
 
 	public  class Items {
@@ -77,6 +78,15 @@ public class NBioBSPJNI {
 		
 		return false ? isErrorOccurred() : true;		
 
+	}
+	
+	public int CloseDevice() {
+		
+		this.codigoErro = 1;
+	    if (s_useNative)
+	      this.codigoErro = NBioBSPJNI.NativeCloseDevice((short)255); 
+	    return this.codigoErro;
+		
 	}
 	
 	
