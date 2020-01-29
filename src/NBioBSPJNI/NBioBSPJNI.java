@@ -44,6 +44,7 @@ public class NBioBSPJNI {
 	private static native int NativeOpenDevice();
 	private static native int NativeCloseDevice(short paramShort);
 	private static native void NativeVerify(INPUT_FIR paramINPUT_FIR, Boolean paramBoolean, FIR_PAYLOAD paramFIR_PAYLOAD);	
+	private static native int NativeVerifyMatch(INPUT_FIR paramINPUT_FIR1, INPUT_FIR paramINPUT_FIR2, Boolean paramBoolean, FIR_PAYLOAD paramFIR_PAYLOAD);
 	private static native int TesteObject(Boolean b);	
 	
 
@@ -121,6 +122,18 @@ public class NBioBSPJNI {
 		
 		//return this.codigoErro = 
 		this.NativeVerify(paramINPUT_FIR, paramBoolean, fp);
+		
+	}
+	
+	
+	public int VerifyMatch(INPUT_FIR paramINPUT_FIR1, INPUT_FIR paramINPUT_FIR2, Boolean paramBoolean, FIR_PAYLOAD paramFIR_PAYLOAD) {
+		
+		
+		this.codigoErro = this.NativeVerifyMatch(paramINPUT_FIR1, paramINPUT_FIR2, paramBoolean, paramFIR_PAYLOAD);
+		
+		return this.codigoErro;
+		
+		
 		
 	}
 	
